@@ -91,4 +91,20 @@ public class FieldFormatterCleanupTest {
 
         assertEquals("Fran{\\c{c}}ois-Marie Arouet", entry.getField(InternalField.KEY_FIELD).get());
     }
+
+
+    @Test
+    public void testEqualFieldAndFormatter() throws Exception {
+        FieldFormatterCleanup cleanup = new FieldFormatterCleanup(InternalField.KEY_FIELD, new UnicodeToLatexFormatter());
+        FieldFormatterCleanup equal = new FieldFormatterCleanup(InternalField.KEY_FIELD, new UnicodeToLatexFormatter());
+        FieldFormatterCleanup different_format = new FieldFormatterCleanup(InternalField.KEY_FIELD, new UpperCaseFormatter());
+        FieldFormatterCleanup different_field = new FieldFormatterCleanup(InternalField.INTERNAL_ALL_FIELD, new UnicodeToLatexFormatter());
+
+
+        assertEquals(true, cleanup.equals(equal)); // Equal
+        assertEquals(true, cleanup.equals(cleanup)); // Identical
+        assertEquals(false, cleanup.equals(different_field)); // Different field
+        assertEquals(false, cleanup.equals(different_format)); // Different format
+        assertEquals(false, cleanup.equals(cleanup.hashCode())); // Diferrent object
+    }
 }
